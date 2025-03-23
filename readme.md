@@ -1,8 +1,8 @@
-# PROJETO CALCULADORA - FASE 2
-  Este é um programa em Python implementado para a realização da validação léxica e sintática das expressões contidas nos arquivos de teste disponivéis. Para que o programa realizasse de forma correta a análise sintática, criou-se uma máquina de estados finitos baseada em um padrão válido de expressões aritméticas e não aritméticas.
+# CALCULATOR PROJECT - PHASE 2
+This is a Python program implemented to perform lexical and syntactical validation of the expressions contained in the available test files. To ensure correct syntactical analysis, a finite state machine was created based on a valid pattern of arithmetic and non-arithmetic expressions.
 
-## Execução do programa
-Caso só estejam disponíveis os arquivos: <br />
+## Program Execution
+If the following files are available: <br />
 analisador.py <br />
 formulas1.txt <br />
 formulas2.txt <br />
@@ -10,13 +10,13 @@ formulas3.txt <br />
 MEFAnalisadorLexico.png <br />
 readme.md <br />
 TabelaDerivacao.png <br />
-Rode o comando: antlr4 -Dlanguage=Python3 Sintatico.g4<br><br> 
-Caso contrário apenas faça:<br />
+Run the command: `antlr4 -Dlanguage=Python3 Sintatico.g4`<br><br> 
+Otherwise, just run:<br />
 --- Replit Shell <br />
-python analisador.py 'formulasn' <br />
-Onde n pode assumir os valores de: 1, 2 e 3. <br />
+`python analisador.py 'formulasn'` <br />
+Where n can be: 1, 2, or 3. <br />
 
-### Exemplo de um padrão válido de expressões
+### Example of a valid expression pattern
 (8 16 -) <br />
 (48 (16 1 -) |) <br />
 ((5 RES) MEM) <br />
@@ -30,79 +30,79 @@ Onde n pode assumir os valores de: 1, 2 e 3. <br />
 (for i in range(MEM): MEM -= 10) <br />
 (2 MEM +) <br />
 
-  Ademais, as expressões válidas são separdas em tokens, os quais são utilizados para gerar uma string de tokens.
-  
-  Após a realização da análise léxica o programa faz a validação sintática das expressões que não apresentaram erro léxico. Para uma análise correta o analisador sintático foi desenvolvido através das regras de produção criadas e da tabela LL(1).
+Additionally, valid expressions are separated into tokens, which are used to generate a string of tokens.
 
-  Além disso, o programa gera a respectiva árvore sintática para as regras de produção criadas e validadas com FIRST e FOLLOW para LL(1).
-  
-## Analisador léxico com máquina de estados finitos
-### - Diagrama de transição da máquina de estados finitos
+After performing lexical analysis, the program validates the syntax of expressions that have no lexical errors. For correct analysis, the syntactical analyzer was developed based on the production rules created and the LL(1) table.
+
+Furthermore, the program generates the corresponding syntax tree for the production rules created and validated with FIRST and FOLLOW for LL(1).
+
+## Lexical Analyzer with Finite State Machine
+### - Finite State Machine Transition Diagram
 <img src="MEFAnalisadorLexico.png"><br>
-  A máquina de estados finitos criada para o analisador léxico usa de base a estrutura de expressões válidas citada anteriormente. Sua funcionalidade consiste em:
+The finite state machine created for the lexical analyzer uses the valid expression structure mentioned earlier. Its functionality is as follows:
 
-#### 1º estado:
-Verifica se o dado consiste em um parênteses aberto '('
+#### State 1:
+Checks if the input is an open parenthesis '('.
 
-#### 2º estado:
-Verifica se o dado consiste em um parênteses fehcado ')'
+#### State 2:
+Checks if the input is a close parenthesis ')'.
 
-#### 3º estado:
-Verifica se o dado consiste em um número (int ou float)
+#### State 3:
+Checks if the input is a number (int or float).
 
-#### 4º estado:
-Verifica se o dado consiste em um operador aritmético ('+', '-', '*', '|', '/', '%', '^')
+#### State 4:
+Checks if the input is an arithmetic operator ('+', '-', '*', '|', '/', '%', '^').
 
-#### 5º estado:
-Verifica se o dado consiste em 'MEM'
+#### State 5:
+Checks if the input is 'MEM'.
 
-#### 6º estado:
-Verifica se o dado consiste em 'RES'
+#### State 6:
+Checks if the input is 'RES'.
 
-#### 7º estado:
-Verifica se o dado consiste em 'if'
+#### State 7:
+Checks if the input is 'if'.
 
-#### 8º estado:
-Verifica se o dado consiste em 'else:'
+#### State 8:
+Checks if the input is 'else:'.
 
-#### 9º estado:
-Verifica se o dado consiste em 'for'
+#### State 9:
+Checks if the input is 'for'.
 
-#### 10º estado:
-Verifica se o dado consiste em comparador ('==', '<', '>', '<=', '>=', '!=' ou 'in', 'not in' ou '=', '+=', '-=', '*=', '/=', '%=', '^=', '|=')
+#### State 10:
+Checks if the input is a comparison operator ('==', '<', '>', '<=', '>=', '!=' or 'in', 'not in' or '=', '+=', '-=', '*=', '/=', '%=', '^=', '|=').
 
-#### 11º estado:
-Verifica se o dado consiste em uma constante ('i', 'range', ':')
+#### State 11:
+Checks if the input is a constant ('i', 'range', ':').
 
-  A verificação é realizada de forma linear, onde a máquina verifica o estado 1, se não for válido passa para o estado 2, dessa forma, se ela chegar até o estado 11 e o mesmo também não for válido ela vai para o estado de erro apontando assim, o erro léxico. Caso a validação seja feita em algum estado, a máquina vai para o estado de resto, onde é verificado se a expressão ainda tem algo a ser analisado. Se a string chegou ao fim a máquina é finalizada, mas se a expressão é aninhada a máquina volta para as verificações novamente.
+The verification is performed linearly, where the machine checks state 1, and if invalid, moves to state 2. If it reaches state 11 and the expression is still invalid, it transitions to the error state, indicating a lexical error. If a state is validated, the machine moves to the rest state, where it checks if the expression still has something to be analyzed. If the string reaches the end, the machine finishes, but if the expression is nested, the machine returns to the checks again.
 
-## Analisador sintático
-### Regras de produção
+## Syntactical Analyzer
+### Production Rules
 
-E → (op op operando)<br><br>
-operando → + OR - OR * OR / OR | OR % OR ^ OR M OR R OR F OR I <br><br>
+E → (op op operand)<br><br>
+operand → + OR - OR * OR / OR | OR % OR ^ OR M OR R OR F OR I <br><br>
 F → for i ob range ( M ) : M oat n <br><br> 
 I → if M opr n : M oat n e <br><br>
 e → else : M oat n | $ <br><br>
 opr → == OR < OR > OR <= OR >= OR != <br><br>
 ob → in OR notIn <br><br>
 oat → = OR += OR -= <br><br> 
-op → n OR E OR M OR $ <br><br> 
-n → num <br><br> 
-M → mem <br><br> 
-R → res <br><br> 
+op → n OR E OR M OR $ <br><br>
+n → num <br><br>
+M → mem <br><br>
+R → res <br><br>
 
-Signicado de siglas:<br><br> 
-E: Expressao<br>
-oat: Operador de atribuição<br>
-ob: Operador de busca<br>
-opr: Operador relacional<br>
+Meaning of acronyms:<br><br> 
+E: Expression<br>
+oat: Assignment operator<br>
+ob: Search operator<br>
+opr: Relational operator<br>
 num: [0..9]+ OR [0-9]+\.[0-9]+ <br>
 
-### Conjuntos de FIRST E FOLLOW
+### FIRST and FOLLOW Sets
 FIRST(S) = {(}<br>
 FIRST(E) = {(}<br>
-FIRST(operando) = {+, -, *, /, |, %, ^, mem, res, for, if}<br>
+FIRST(operand) = {+, -, *, /, |, %, ^, mem, res, for, if}<br>
 FIRST(F) = {for}<br>
 FIRST(I) = {if}<br>
 FIRST(e) = {else, $}<br>
@@ -115,21 +115,21 @@ FIRST(M) = {mem}<br>
 FIRST(R) = {res}<br>
 
 FOLLOW(S) = {$}<br>
-FOLLOW(E) = {+, -, *, /, |, %, ^, mem, res, for, if, (, $, num}<br>
-FOLLOW(operando) = {)}<br>
+FOLLOW(E) = {+, -, *, /, |, %, ^, mem, res, for, if, (, $, num}<br>
+FOLLOW(operand) = {)}<br>
 FOLLOW(F) = {)}<br>
 FOLLOW(I) = {)}<br>
 FOLLOW(e) = {)}<br>
 FOLLOW(opr) = {num}<br>
 FOLLOW(ob) = {range}<br>
 FOLLOW(oat) = {num}<br>
-FOLLOW(op) = {+, -, *, /, |, %, ^, mem, res, for, if, (, $, num}<br>
-FOLLOW(n) = {), else, $, :, +, -, *, /, |, %, ^, mem, res, for, if, (, num}<br>
-FOLLOW(M) = {), =, +=, -=, ==, <, >, <=, >=, !=, +, -, *, /, |, %, ^, mem, res, for, if, (, $, num}<br>
+FOLLOW(op) = {+, -, *, /, |, %, ^, mem, res, for, if, (, $, num}<br>
+FOLLOW(n) = {), else, $, :, +, -, *, /, |, %, ^, mem, res, for, if, (, num}<br>
+FOLLOW(M) = {), =, +=, -=, ==, <, >, <=, >=, !=, +, -, *, /, |, %, ^, mem, res, for, if, (, $, num}<br>
 FOLLOW(R) = {)}<br>
 
-### Tabela de derivação
+### Derivation Table
 <img src="TabelaDerivacao.png"><br>
-  Após a criação das regras de produção com o First e Follow para o LL(1) e da tabela de derivação, foi desenvolvido um analisador sintático através do ANTLR, dessa forma, o mesmo respeita a gramática criada.
+After creating the production rules with First and Follow for LL(1) and the derivation table, a syntactical analyzer was developed using ANTLR, which respects the created grammar.
 
-  Ademais, foram feito tratamentos para preencher os espaços vazios entre parêntese com $, pois assim, o analisador sintático pode realizar a validação de forma correta.
+Additionally, treatments were done to fill the empty spaces between parentheses with $, allowing the syntactical analyzer to perform the validation correctly.
