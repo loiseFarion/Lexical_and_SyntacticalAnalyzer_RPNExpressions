@@ -1,0 +1,15 @@
+digraph {
+	0 [label=program]
+	0 -> 1
+	1 [label=expression]
+	1 -> 11
+	1 -> 12
+	1 -> 13
+	13 [label="op 2"]
+	13 -> 131
+	131 [label="operando *"]
+	12 [label="op $"]
+	12 -> 121
+	121 [label="operando RES"]
+	11 [label="op 1"]
+}

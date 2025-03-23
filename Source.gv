@@ -1,0 +1,1 @@
+(program (expression ( (op 1) (op (expression ( (op $) (op 2) (operando RES) ))) (operando *) )) <EOF>)
